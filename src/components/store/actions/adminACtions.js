@@ -21,10 +21,9 @@ export const getArticles = (token) => {
     })
   }
 }
-export const addArticles = (articles, token) => {
+export const addArticle = (article, token) => {
   return dispatch => {
-    API.addArticles(articles, token, res => {
-
+    API.addArticle(article, token, res => {
       dispatch({
         type: 'ARTICLE_ADDED',
         payload: res.data

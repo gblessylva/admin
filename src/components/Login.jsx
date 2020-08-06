@@ -26,13 +26,11 @@ class Login extends Component {
       <div className="form-container">
         <h1>Hello Login Page</h1>
         <form
-         // onSubmit={this.props.handleSubmit}
-        onSubmit={e => {
-        e.preventDefault();
-        console.log('Losgin attempt', this.props.auth)
-        this.props.login(this.props.values.email, this.props.values.password)
+          onSubmit={e => {
+            e.preventDefault();
+            this.props.login(this.props.values.email, this.props.values.password)
 
-        }}
+          }}
         >
           {fileds.map((f, i) => {
             return (

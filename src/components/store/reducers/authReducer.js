@@ -8,10 +8,11 @@ const auth = (state = defaultState, action) => {
       return {
         ...state,
         user: action.payload,
+        token: action.payload.token,
 
       }
-    default:
-      return state
+      default:
+        return state
   }
 }
 export default auth;

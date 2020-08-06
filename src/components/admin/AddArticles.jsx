@@ -119,8 +119,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  addArticles: (articles, token) => {
-    dispatch(AdminAction.addArticles(articles, token))
+  addArticle: (article, token) => {
+    dispatch(AdminAction.addArticle(article, token))
   }
 })
 
@@ -133,7 +133,6 @@ export default withRouter (connect(
     description: "",
     content: "",
     slug: "",
-    createdAt: "",
     status: false
 
   }),
@@ -141,9 +140,9 @@ export default withRouter (connect(
     title: Yup.string().required('Title is Required'),
     content: Yup.string().required('Add content blocks')
   }),
-  handleSubmit: (values, { setSubmitting, props }) => {
+  handleSubmit: (values, { setSubmitting, props}) => {
+    console.log('Saving', values)
+  props.addArticle(values, props.auth.token)
 
-    props.addArticles(values, props.auth.token)
-    console.log('fired', props.addArticles)
   }
 })(withStyles(styles)((AddArticles)))));

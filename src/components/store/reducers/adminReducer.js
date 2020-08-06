@@ -19,7 +19,7 @@ const admin = (state = defaultState, action) => {
     case 'ARTICLE_ADDED':
       return {
         ...state,
-        articles: state.articles.concat(action.payload)
+        article: state.article.concat(action.payload)
       }
     case 'GOT_SINGLE_ARTICLE':
       return {

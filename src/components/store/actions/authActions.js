@@ -5,8 +5,7 @@ export const login = (email, password) => {
     API.login(email, password, result => {
       dispatch({
         type: 'LOGIN',
-        payload:
-        {
+        payload: {
           email: email,
           token: result.data.id,
           userId: result.data.userId

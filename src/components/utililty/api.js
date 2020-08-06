@@ -25,9 +25,8 @@ const API = {
       cb(res)
     })
   },
-  addArticles: (articles, token, cb) => {
-    console.log('Adding', articles)
-    axios.post(`${URI}/api/Articles?access_token=${token}`, articles)
+  addArticle: (article, token, cb) => {
+    axios.post(`${URI}/api/Articles?access_token=${token}`, article)
       .then(res => {
       cb(res)
     })

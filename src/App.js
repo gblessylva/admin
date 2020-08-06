@@ -7,7 +7,6 @@ import Dashboard from './components/admin/Dashboard';
 
 
 function App(props) {
-
 return (
   <Router>
     <div className="App">
@@ -26,7 +25,7 @@ return (
 
 const mapStateToProps = state => {
   return {
-    auth: state.auth.user
+    auth: state.auth
   }
 }
 const mapDispatchToProps = dispatch => {
