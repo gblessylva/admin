@@ -1,11 +1,13 @@
 import React from 'react';
 import MaterialTable from 'material-table';
+import { withRouter } from 'react-router-dom';
 
 
-export default function PositioningActionsColumn(props) {
+function TableWithAction(props) {
+
+
   return (
     <MaterialTable
-
       title={props.title}
       type={props.type}
       columns={props.columns}
@@ -14,13 +16,17 @@ export default function PositioningActionsColumn(props) {
         {
           icon: 'edit',
           tooltip: `Edit ${props.type}`,
-          onClick: (event, rowData) => alert("You saved " + rowData.name)
+
+          onClick: (event, rowData) => {
+            const isSingleRow = rowData.map((row, i) => { return row.id })
+            props.history.push(`/admin/articles/edit/${rowData[0].id}`);
+          },
         },
-        
+
         rowData => ({
           icon: 'delete',
           tooltip: `Delete ${props.type}`,
-          onClick: (event, rowData) => console.log("You want to delete " + rowData.name),
+          onClick: (event, rowData) => console.log("You want to delete " + rowData),
           disabled: rowData.birthYear < 2000
         })
       ]}
@@ -32,3 +38,5 @@ export default function PositioningActionsColumn(props) {
     />
   )
 }
+
+export default withRouter(TableWithAction)
