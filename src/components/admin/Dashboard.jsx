@@ -24,7 +24,6 @@ import Articles from './Articles';
 import AddArticles from './AddArticles'
 
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -89,7 +88,7 @@ function Dashboard(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  { document.title = `Welcome ${props.auth.user.email} ` }
   const handleDrawerOpen = () => {
     setOpen(true);
   };

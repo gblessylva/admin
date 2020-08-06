@@ -5,7 +5,11 @@ import Login from './components/Login';
 import {connect} from 'react-redux'
 import Dashboard from './components/admin/Dashboard';
 
-
+{
+  {
+    document.title = `Sylvanus Godbless Admin Login Page `
+  }
+}
 function App(props) {
 return (
   <Router>

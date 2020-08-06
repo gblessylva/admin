@@ -20,6 +20,7 @@ function TableWithAction(props) {
           onClick: (event, rowData) => {
             const isSingleRow = rowData.map((row, i) => { return row.id })
             props.history.push(`/admin/articles/edit/${rowData[0].id}`);
+            
           },
         },
 

@@ -1,7 +1,7 @@
 const defaultState = {
   users: [],
   token: [],
-  article: []
+  article: {}
 }
 const admin = (state = defaultState, action) => {
   switch (action.type) {

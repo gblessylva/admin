@@ -10,7 +10,7 @@ import Link from '@material-ui/core/Link'
 
 import * as adminAction from '../store/actions/adminACtions'
 const columns = [
-  { title: 'ID', field: 'id' },
+  { title: 'ID', field: 'id', render: rowData => <Link to={`/admin/articles/edit/${rowData.id}`} component={RouterLink}>{rowData.id}</Link> },
   { title: 'Title', field: 'title' },
   { title: 'Description', field: 'description', },
   {
@@ -21,6 +21,11 @@ const columns = [
     title: 'Status',
     field: 'status',
   },
+  {
+    field: 'edit', render: rowData => <Link to={`/admin/articles/edit/${rowData.id}`} component={RouterLink}>Edit</Link>
+  },
+
+
 ]
 
 const styles = theme => ({

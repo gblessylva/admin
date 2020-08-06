@@ -50,6 +50,11 @@ class AddArticles extends Component {
       this.props.history.push('/admin/articles/edit/'+articles.id)
     }
   }
+  componentDidMount(props, state) {
+    if (this.props.match.params.view === 'edit' && this.props.match.id) {
+      this.props.getSingleArticle(this.props.match.params.id, this.props.auth.token)
+    }
+  }
   render() {
     const { classes } = this.props
 
@@ -121,6 +126,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   addArticle: (article, token) => {
     dispatch(AdminAction.addArticle(article, token))
+  },
+  getSingleArticle: (id, token) => {
+    dispatch(AdminAction.getSingleArticle(id, token))
   }
 })
 
@@ -128,8 +136,8 @@ export default withRouter (connect(
   mapStateToProps,
   mapDispatchToProps,
 )(withFormik({
-  mapPropsToValues: () => ({
-    title: "",
+  mapPropsToValues: (props) => ({
+    title: props.admin.article.title || "",
     description: "",
     content: "",
     slug: "",
