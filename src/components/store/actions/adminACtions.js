@@ -41,4 +41,15 @@ export const getSingleArticle = (id, token) => {
         })
       })
     }
+}
+
+export const updateArticle = (id, token) => {
+  return dispatch => {
+    API.updateArticle(id, token, res => {
+      dispatch({
+        type: 'UPDATED_ARTICLE',
+        payload: res.data
+      })
+    })
   }
+}

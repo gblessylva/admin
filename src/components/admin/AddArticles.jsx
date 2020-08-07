@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { withFormik, Form } from 'formik';
 import { FormikTextField, FormikSelectField } from 'formik-material-fields';
@@ -45,24 +45,35 @@ const styles = theme => ({
 
 class AddArticles extends Component {
   componentDidUpdate(props, state) {
-    if (this.props.match.params.view === 'add' && this.props.admin.articles.filter(p =>  p.title === this.props.values.title ).length > 0) {
-      const articles = this.props.admin.articles.filter(p=>p.title===this.props.values.title)[0]
-      this.props.history.push('/admin/articles/edit/'+articles.id)
+    if (this.props.match.params.view === 'add' && this.props.admin.articles.filter(p => p.title === this.props.values.title).length > 0) {
+      const articles = this.props.admin.articles.filter(p => p.title === this.props.values.title)[0]
+      this.props.history.push('/admin/articles/edit/' + articles.id)
+    }
+    if (this.props.admin.article.id !== props.admin.article.id) {
+      //Fires when the reducer changes post in admin
+      //also prevents edit post from inherintinmg previous posts state
+      this.props.setValues(this.props.admin.article)
     }
   }
   componentDidMount(props, state) {
-    if (this.props.match.params.view === 'edit' && this.props.match.id) {
+    if (this.props.match.params.view === 'edit' && this.props.match.params.id) {
       this.props.getSingleArticle(this.props.match.params.id, this.props.auth.token)
+
     }
+
   }
+
+
   render() {
     const { classes } = this.props
+    const isView = this.props.match.params.view === 'edit';
+    const isID = this.props.match.params.id
 
     return (
       <main>
         <Paper>
-          <Typography align='center' variant="h4" component="h4">
-            Add new Post
+          <Typography align='center' variant="h6" component="h6">
+            {isView && isID ? `${this.props.admin.article.title}` : "Add New Post"}
           </Typography>
 
           <Form className={classes.container}>
@@ -127,30 +138,42 @@ const mapDispatchToProps = dispatch => ({
   addArticle: (article, token) => {
     dispatch(AdminAction.addArticle(article, token))
   },
+  updateArticle: (id, token) => {
+    dispatch(AdminAction.updateArticle(id, token))
+  },
   getSingleArticle: (id, token) => {
     dispatch(AdminAction.getSingleArticle(id, token))
   }
 })
 
-export default withRouter (connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps,
 )(withFormik({
   mapPropsToValues: (props) => ({
     title: props.admin.article.title || "",
-    description: "",
-    content: "",
-    slug: "",
-    status: false
+    description: props.admin.article.description || "",
+    content: props.admin.article.content || "",
+    slug: props.admin.article.slug || "",
+    status: props.admin.article.status === true || false,
 
   }),
   validationSchema: Yup.object().shape({
     title: Yup.string().required('Title is Required'),
     content: Yup.string().required('Add content blocks')
   }),
-  handleSubmit: (values, { setSubmitting, props}) => {
+  handleSubmit: (values, { setSubmitting, props }) => {
     console.log('Saving', values)
-  props.addArticle(values, props.auth.token)
+    if (props.match.params.view === 'edit') {
+      const article = {
+        ...values,
+        id: props.match.params.id
+      }
+      props.updateArticle(article, props.auth.token)
+    }else {
+          props.addArticle(values, props.auth.token)
+
+    }
 
   }
 })(withStyles(styles)((AddArticles)))));

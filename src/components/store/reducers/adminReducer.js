@@ -19,12 +19,32 @@ const admin = (state = defaultState, action) => {
     case 'ARTICLE_ADDED':
       return {
         ...state,
-        article: state.article.concat(action.payload)
+        articles: state.articles.concat(action.payload),
+        article: action.payload
       }
+    case 'UPDATED_ARTICLE': {
+      return {
+        ...state,
+        article: action.payload,
+        articles: state.articles.map(art => {
+          if (art.id === action.payload.id) {
+            return {
+              ...art,
+              ...action.payload
+            }
+
+            } else {
+            return {
+              art
+            }
+          }
+        })
+      }
+    }
     case 'GOT_SINGLE_ARTICLE':
       return {
         ...state,
-        articles: action.payload
+        article: action.payload
       }
         default:
           return state

@@ -146,11 +146,18 @@ function Dashboard(props) {
         <SideBar />
       </Drawer>
       <Route
-        path='/admin/articles/:view'
+        path='/admin/articles/:view/'
         exact={true}
         component={AddArticles}
       >
 
+
+      </Route>
+      <Route
+        path='/admin/articles/:view/:id'
+        exact={true}
+        component={AddArticles}
+      >
       </Route>
       <Route path='/admin/users'
         exact={true}
