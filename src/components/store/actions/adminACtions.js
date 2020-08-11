@@ -21,6 +21,16 @@ export const getArticles = (token) => {
     })
   }
 }
+export const uploadImage = (data, token, articleId, userId) => {
+  return dispatch => {
+    API.uploadImage(data, token, articleId, userId, res => {
+      dispatch({
+        type: 'UPLOADED_IMAGE',
+        payload: res.data
+      })
+    })
+  }
+}
 export const addArticle = (article, token) => {
   return dispatch => {
     API.addArticle(article, token, res => {

@@ -1,4 +1,7 @@
 import axios from 'axios';
+import {
+  uploadImage
+} from '../store/actions/adminACtions';
 
 const URI = 'http://localhost:4040'
 const API = {
@@ -12,6 +15,11 @@ const API = {
       .then(res => {
         success(res)
       })
+  },
+  makeFileURL: (url, token) => {
+    const newurlink = URI + url + "?access_token=" + token;
+    console.log(newurlink)
+    return newurlink
   },
   getUsers: (token, cb) => {
     axios.get(`${URI}/api/users?access_token=${token}`)
@@ -40,7 +48,17 @@ const API = {
       )
   },
   getSingleArticle: (id, token, cb) => {
-    axios.get(`${URI}/api/Articles/${id}?access_token=${token}`)
+    axios.get(`${URI}/api/Articles/${id}?access_token=${token}`, {
+     
+      })
+      .then(
+        res => {
+          cb(res)
+        }
+      )
+  },
+  uploadImage: (data, token, articleId, userId, cb) => {
+    axios.post(`${URI}/api/ArticleImages/upload?article_id=${articleId}&access_token?=${token}&user_id${userId}`, data)
       .then(
         res => {
           cb(res)

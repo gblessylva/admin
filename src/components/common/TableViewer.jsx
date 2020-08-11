@@ -18,9 +18,9 @@ function TableWithAction(props) {
           tooltip: `Edit ${props.type}`,
 
           onClick: (event, rowData) => {
-            const isSingleRow = rowData.map((row, i) => { return row.id })
+            //const isSingleRow = rowData.map((row, i) => { return row.id })
             props.history.push(`/admin/articles/edit/${rowData[0].id}`);
-            
+
           },
         },
 

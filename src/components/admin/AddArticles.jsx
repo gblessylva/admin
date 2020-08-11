@@ -13,7 +13,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save'
 
+import API from '../utililty/api'
 
+/* global $ */
 
 const styles = theme => ({
   container: {
@@ -35,8 +37,11 @@ const styles = theme => ({
   rightColumn: {
     flex: 1,
     height: '100%',
-    margin: theme.spacing.unit * 1,
-    padding: theme.spacing.unit * 3
+    margin: theme.spacing(1),
+    padding: theme.spacing(3)
+  },
+  uploadBTN: {
+    marginTop: theme.spacing(3)
   }
 
 
@@ -53,6 +58,7 @@ class AddArticles extends Component {
       //Fires when the reducer changes post in admin
       //also prevents edit post from inherintinmg previous posts state
       this.props.setValues(this.props.admin.article)
+      API.makeFileURL(this.props.admin, this.props.auth.token)
     }
   }
   componentDidMount(props, state) {
@@ -62,7 +68,11 @@ class AddArticles extends Component {
     }
 
   }
-
+  uploadImage = (e) => {
+    const data = new FormData();
+    data.append('file', e.target.files[0], new Date().getTime().toString() + e.target.files[0].name);
+    this.props.uploadImage(data, this.props.auth.token, this.props.admin.article.id, this.props.auth.user.userId)
+  }
 
   render() {
     const { classes } = this.props
@@ -96,6 +106,13 @@ class AddArticles extends Component {
               />
               <FormikTextField
 
+                name="description"
+                label="Post Description"
+                margin="normal"
+
+              />
+              <FormikTextField
+
                 name="content"
                 label="Post Content"
                 margin="normal"
@@ -114,12 +131,36 @@ class AddArticles extends Component {
                 ]}
                 fullWidth
               />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={e => this.props.handleSubmit()}
-                startIcon={<SaveIcon />}
-              >  Publish</Button>
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={e => this.props.handleSubmit()}
+                  startIcon={<SaveIcon />}
+                >  Publish</Button>
+
+              </div>
+              <div className="featured-iamge-thumb">
+
+                {this.props.admin.article.ArticleImage ?
+                  this.props.admin.article.ArticleImage.length > 0 ?
+                    <img src={this.props.admin.article.ArticleImage} className={classes.postImage} alt='featured' />
+                    : <p>Add Featured Image</p>
+                  : null
+                }
+
+                {console.log('fff', this.props.admin.article.ArticleImage)}
+              </div>
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={e => {
+                    $('.MyFile').trigger('click');
+                  }}
+                ><SaveIcon /> Upload Post Image</Button>
+                <input type="file" style={{ display: 'none' }} className="MyFile" onChange={this.uploadImage} />
+              </div>
             </Paper>
           </Form>
         </Paper>
@@ -143,6 +184,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getSingleArticle: (id, token) => {
     dispatch(AdminAction.getSingleArticle(id, token))
+  },
+  uploadImage: (data, token, articleId, userId) => {
+    dispatch(AdminAction.uploadImage(data, token, articleId, userId))
   }
 })
 
@@ -156,6 +200,8 @@ export default withRouter(connect(
     content: props.admin.article.content || "",
     slug: props.admin.article.slug || "",
     status: props.admin.article.status === true || false,
+    createdAt: new Date(),
+    ArticleImage: ''
 
   }),
   validationSchema: Yup.object().shape({
@@ -163,16 +209,22 @@ export default withRouter(connect(
     content: Yup.string().required('Add content blocks')
   }),
   handleSubmit: (values, { setSubmitting, props }) => {
-    console.log('Saving', values)
+    const URI = 'http://localhost:4040'
     if (props.match.params.view === 'edit') {
+
       const article = {
         ...values,
-        id: props.match.params.id
+        id: props.match.params.id,
+        ArticleImage: URI + props.admin.article.ArticleImage[0].url
       }
       props.updateArticle(article, props.auth.token)
-    }else {
-          props.addArticle(values, props.auth.token)
-
+    } else {
+      const fresharticle = {
+        ...values,
+        newVa: 'test',
+        ArticleImage: URI + props.admin.article.ArticleImage[0].url
+      }
+      props.addArticle(fresharticle, props.auth.token)
     }
 
   }

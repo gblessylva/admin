@@ -88,14 +88,12 @@ function Dashboard(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  { document.title = `Welcome ${props.auth.user.email} ` }
+  document.title = `Welcome ${props.auth.user.email} ` 
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const handleDrawerClose = () => {setOpen(false);};
 
   return (
 

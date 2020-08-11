@@ -54,11 +54,21 @@ a {
   text-decoration: none;
   color: inherit;
 }
-.pending, .Pending {
+
+.pending,
+.Pending {
   color: orangered
 }
 
+.featured-iamge-thumb {
+  width: 200px;
+  height: 200px;
+  margin-top: 20px;
+}
 
+.featured-iamge-thumb img {
+  width: 100%;
+}
 
 /* .add-button{
   position: fixed !important;

@@ -1,6 +1,6 @@
 const defaultState = {
   users: [],
-  token: [],
+  articles: [],
   article: {}
 }
 const admin = (state = defaultState, action) => {
@@ -16,38 +16,46 @@ const admin = (state = defaultState, action) => {
           ...state,
           articles: action.payload
         }
-    case 'ARTICLE_ADDED':
-      return {
-        ...state,
-        articles: state.articles.concat(action.payload),
-        article: action.payload
-      }
-    case 'UPDATED_ARTICLE': {
-      return {
-        ...state,
-        article: action.payload,
-        articles: state.articles.map(art => {
-          if (art.id === action.payload.id) {
-            return {
-              ...art,
-              ...action.payload
-            }
-
-            } else {
-            return {
-              art
-            }
+        case 'ARTICLE_ADDED':
+          return {
+            ...state,
+            articles: state.articles.concat(action.payload),
+              article: action.payload
           }
-        })
-      }
+          case 'UPDATED_ARTICLE': {
+            return {
+              ...state,
+              article: action.payload,
+              articles: state.articles.map(art => {
+                if (art.id === action.payload.id) {
+                  return {
+                    ...art,
+                    ...action.payload
+                  }
+
+                } else {
+                  return {
+                    art
+                  }
+                }
+              })
+            }
     }
-    case 'GOT_SINGLE_ARTICLE':
-      return {
-        ...state,
-        article: action.payload
-      }
-        default:
-          return state
+          case 'UPLOADED_IMAGE':
+            return {
+              ...state,
+              article: {
+                ...state.article,
+                ArticleImage: [action.payload]
+              }
+            }
+            case 'GOT_SINGLE_ARTICLE':
+              return {
+                ...state,
+                article: action.payload
+              }
+              default:
+                return state
   }
 }
 export default admin;

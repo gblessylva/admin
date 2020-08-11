@@ -20,7 +20,7 @@ const columns = [
   {
     title: 'Status',
     field: 'status',
-  },
+    },
   {
     field: 'edit', render: rowData => <Link to={`/admin/articles/edit/${rowData.id}`} component={RouterLink}>Edit</Link>
   },
