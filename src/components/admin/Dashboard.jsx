@@ -22,7 +22,7 @@ import SideBar from './Sidebar'
 import Users from './Users';
 import Articles from './Articles';
 import AddArticles from './AddArticles'
-
+import EditArticle from './EditArticle'
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,7 +88,7 @@ function Dashboard(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  document.title = `Welcome ${props.auth.user.email} ` 
+  document.title = `Welcome ${props.auth.user.email} `
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -154,7 +154,7 @@ function Dashboard(props) {
       <Route
         path='/admin/articles/:view/:id'
         exact={true}
-        component={AddArticles}
+        component={EditArticle}
       >
       </Route>
       <Route path='/admin/users'

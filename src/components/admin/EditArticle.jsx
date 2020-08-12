@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save'
 
-import API from '../utililty/api'
+// API from '../utililty/api'
 
 /* global $ */
 
@@ -51,7 +51,7 @@ const styles = theme => ({
 
 })
 
-class AddArticles extends Component {
+class EditArticle extends Component {
   componentDidUpdate(props, state) {
 
     if (this.props.match.params.view === 'add' && this.props.admin.articles.filter(p => p.title === this.props.values.title).length > 0) {
@@ -66,7 +66,13 @@ class AddArticles extends Component {
 
   }
   componentDidMount(props, state) {
-
+    if (this.props.match.params.view === 'add') {
+      this.props.admin.article.title = ''
+      this.props.admin.article.description = ''
+      this.props.admin.article.slug = ''
+      this.props.admin.article.ArticleImage = ''
+      this.props.admin.article.content = ''
+    }
     if (this.props.match.params.view === 'edit' && this.props.match.params.id) {
       this.props.getSingleArticle(this.props.match.params.id, this.props.auth.token)
 
@@ -85,10 +91,10 @@ class AddArticles extends Component {
       [{ 'header': [1, 2, 3, 4, 5, 6, false] }, { 'font': [] }],
       [{ size: [] }],
       [{ 'color': [] }, { 'background': [] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote', { 'align': [] },  'code-block'],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote', { 'align': [] }, 'code-block'],
       [{ 'list': 'ordered' }, { 'list': 'bullet' },
       { 'indent': '-1' }, { 'indent': '+1' }],
-    ['link', 'image', 'video'],
+      ['link', 'image', 'video'],
       [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }]
       ['clean']
     ],
@@ -196,7 +202,7 @@ class AddArticles extends Component {
                   onClick={e => {
                     $('.MyFile').trigger('click');
                   }}
-                ><SaveIcon /> Featured Image</Button>
+                ><SaveIcon /> Upload Post Image</Button>
                 <input type="file" style={{ display: 'none' }} className="MyFile" onChange={this.uploadImage} />
               </div>
             </Paper>
@@ -233,11 +239,11 @@ export default withRouter(connect(
   mapDispatchToProps,
 )(withFormik({
   mapPropsToValues: (props) => ({
-    title:  '',
-    description:  "",
-    content:  "",
-    slug:  "",
-    status: true,
+    title: props.admin.article.title,
+    description: props.admin.article.description,
+    content: props.admin.article.content,
+    slug: props.admin.article.slug,
+    status: props.admin.article.status,
     createdAt: new Date(),
     ArticleImage: ''
 
@@ -248,11 +254,23 @@ export default withRouter(connect(
   }),
   handleSubmit: (values, { setSubmitting, props }) => {
     const URI = 'http://localhost:4040'
+    if (props.match.params.view === 'edit') {
+
+      const article = {
+        ...values,
+        id: props.match.params.id,
+        ArticleImage: URI + props.admin.article.ArticleImage[0].url
+      }
+      props.updateArticle(article, props.auth.token)
+    } else {
       const fresharticle = {
         ...values,
+        newVa: 'test',
         ArticleImage: URI + props.admin.article.ArticleImage[0].url
       }
       props.addArticle(fresharticle, props.auth.token)
 
+    }
+
   }
-})(withStyles(styles)((AddArticles)))));
+})(withStyles(styles)((EditArticle)))));

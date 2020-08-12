@@ -53,7 +53,7 @@ class Articles extends Component {
           columns={columns}
           data={posts}
           type='Article'
-          title='All Post View'
+          title={`There are ${this.props.admin.articles.length} Articles In Post View`}
         />
         <Fab
           component={RouterLink}
